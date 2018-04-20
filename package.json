@@ -1,0 +1,27 @@
+{
+  "name": "gitops-bot-commit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@octokit/rest": "^15.2.6",
+    "jsonwebtoken": "^8.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danillouz/gitops-bot-commit.git"
+  },
+  "keywords": [],
+  "author": "Daniël Illouz <daniel.illouz@me.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danillouz/gitops-bot-commit/issues"
+  },
+  "homepage": "https://github.com/danillouz/gitops-bot-commit#readme"
+}
