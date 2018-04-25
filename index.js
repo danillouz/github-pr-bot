@@ -8,14 +8,14 @@ const { APP_ID, PRIVATE_KEY } = process.env;
 const noAppIdMsg = `Provide the \`APP_ID\` env. var.
 
   In order to be able to authenticate as a GitHub App, the App ID is required. This ID will be used as
-  the issuer claim in the generated JWT. For more information see:
+  the "issuer claim" in the generated JWT. For more information see:
 
     https://developer.github.com/apps/building-github-apps/authentication-options-for-github-apps/#authenticating-as-a-github-app
 
-  The App ID can be retrieved after creating the GitHub App, from the setting page, in the "About"
-  section. For more information see:
+  The App ID can be retrieved after creating the GitHub App from the setting page (in the "About"
+  section). For more information see:
 
-    https://developer.github.com/apps/building-github-apps/creating-a-github-app/
+    https://developer.github.com/apps/building-github-apps/creating-a-github-app
 `;
 
 if (!APP_ID) {
@@ -24,12 +24,12 @@ if (!APP_ID) {
 
 const noPrivateKeyMsg = `Provide the \`PRIVATE_KEY\` env. var.
 
-  GitHub Apps require a private key to sign acces token requests. GitHub allows you to create and
+  GitHub Apps require a private key to sign access token requests. GitHub allows you to create and
   download private keys in PEM format. For more information see:
 
     https://developer.github.com/apps/building-github-apps/authentication-options-for-github-apps/#generating-a-private-key
 
-  The \`PRIVATE_KEY\` env. var. expects that the contents of the PEM file are passed as a single string,
+  The \`PRIVATE_KEY\` env. var. expects that the contents of the PEM file are passed as a single string
   with escaped newlines. You can convert your PEM file to a string by running:
 
     $ awk '$1=$1' ORS='\\n' ./private-key.pem
@@ -39,7 +39,7 @@ if (!PRIVATE_KEY) {
   throw new Error(noPrivateKeyMsg);
 }
 
-async function authApp(github, appId, privateKey) {
+async function _authApp(github, appId, privateKey) {
   const nowInSec = Math.floor(Date.now() / 1e3);
   const payload = {
     iat: nowInSec,
@@ -57,7 +57,7 @@ async function authApp(github, appId, privateKey) {
   });
 }
 
-async function authInstallation(github) {
+async function _createInstallation(github) {
   const { data: installs } = await github.apps.getInstallations();
   const [install] = installs;
 
@@ -73,79 +73,124 @@ async function authInstallation(github) {
   return install;
 }
 
-async function createCommit(github, repoInfo, filePath, fileContent, commitMsg) {
-  const { data: ref } = await github.gitdata.getReference({
-    ...repoInfo,
-    ref: 'heads/master'
-  });
+async function _getBaseCommit(github, repoInfo, branch) {
+  let baseCommitSha;
 
-  const lastCommitSha = ref.object.sha;
+  try {
+    const { data: ref } = await github.gitdata.getReference({
+      ...repoInfo,
+      ref: `heads/${branch.base}`
+    });
+
+    const noExactMatch = Array.isArray(ref);
+
+    if (noExactMatch) {
+      const error = new Error();
+
+      error.code = 'NO_BASE_BRANCH';
+
+      throw error;
+    }
+
+    baseCommitSha = ref.object.sha;
+  } catch (err) {
+    const noBaseBranch = err.code === 404 || err.code == 'NO_BASE_BRANCH';
+
+    if (noBaseBranch) {
+      throw new Error(`Base branch "${baseBranch}" not found.`);
+    }
+
+    throw err;
+  }
 
   const { data: commit } = await github.gitdata.getCommit({
     ...repoInfo,
-    sha: lastCommitSha
+    sha: baseCommitSha
   });
 
-  const lastTreeSha = commit.tree.sha;
+  return {
+    sha: baseCommitSha,
+    treeSha: commit.tree.sha
+  };
+}
 
-  const treeObjs = [
-    {
-      path: filePath,
-      mode: '100644',
-      type: 'blob',
-      content: fileContent
-    }
-  ];
-
+async function _createCommit(github, repoInfo, baseCommit, commit) {
   const { data: newTree } = await github.gitdata.createTree({
     ...repoInfo,
-    tree: JSON.stringify(treeObjs),
-    base_tree: lastTreeSha
+    tree: JSON.stringify([
+      {
+        path: commit.path,
+        mode: '100644', // file
+        type: 'blob',
+        content: commit.content
+      }
+    ]),
+    base_tree: baseCommit.treeSha
   });
 
   const { data: newCommit } = await github.gitdata.createCommit({
     ...repoInfo,
-    message: commitMsg,
+    message: commit.message,
     tree: newTree.sha,
-    parents: [lastCommitSha]
+    parents: [baseCommit.sha]
   });
 
   return newCommit.sha;
 }
 
-async function createPR(github, repoInfo, newCommitSha, branchName, target, prTitle, prText) {
+async function _createPR(github, repoInfo, newCommitSha, branch, pr) {
   await github.gitdata.createReference({
     ...repoInfo,
     sha: newCommitSha,
-    ref: `refs/heads/${branchName}`
+    ref: `refs/heads/${branch.head}`
   });
 
-  const { data: pr } = await github.pullRequests.create({
+  const { data: newPR } = await github.pullRequests.create({
     ...repoInfo,
-    head: branchName,
-    base: target,
-    title: prTitle,
-    body: prText,
+    head: branch.head,
+    base: branch.base,
+    title: pr.title,
+    body: pr.text,
     maintainer_can_modify: true
   });
 
-  return pr.html_url;
+  return newPR.html_url;
 }
 
-async function run() {
+async function run(repo, branch, commit, pr) {
   const github = octokit();
 
-  await authApp(github, APP_ID, PRIVATE_KEY);
+  await _authApp(github, APP_ID, PRIVATE_KEY);
 
-  const install = await authInstallation(github);
+  const installation = await _createInstallation(github);
 
   const repoInfo = {
-    owner: install.account.login,
-    repo: 'gitops-bot-test'
+    owner: installation.account.login,
+    repo: repo.name
   };
 
-  const filePath = 'k8s/deployment.yaml';
-  const fileContent = `apiVersion: extensions/v1beta1
+  const baseCommit = await _getBaseCommit(github, repoInfo, branch);
+  const newCommitSha = await _createCommit(github, repoInfo, baseCommit, commit);
+  const prUrl = await _createPR(github, repoInfo, newCommitSha, branch, pr);
+
+  console.log('prUrl: ', prUrl);
+}
+
+const repo = {
+  name: 'gitops-bot-test'
+};
+
+const branch = {
+  // The name of the branch you want the changes pulled into.
+  base: 'master',
+
+  // The name of the branch where your changes are implemented.
+  head: `test-${Date.now()}`
+};
+
+const commit = {
+  path: 'k8s/deployment.yaml',
+  content: `apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: test
@@ -162,19 +207,16 @@ spec:
       - image: danillouz/docker-say:1.0.0
         name: test
         ports:
-        - containerPort: 8888`;
-  const commitMsg = 'I am the Git captain now!';
-  const newCommitSha = await createCommit(github, repoInfo, filePath, fileContent, commitMsg);
-  const branchName = `test-${Date.now()}`;
-  const target = 'master';
-  const prTitle = 'Update Config';
-  const prText = 'kakaa!';
-  const prUrl = await createPR(github, repoInfo, newCommitSha, branchName, target, prTitle, prText);
+        - containerPort: 8888`,
+  message: 'I am the Git captain now!'
+};
 
-  console.log('prUrl: ', prUrl);
-}
+const pr = {
+  title: 'Update Config',
+  text: 'Kakaa!'
+};
 
-run()
+run(repo, branch, commit, pr)
   .then(() => {
     console.log('run ok');
   })
