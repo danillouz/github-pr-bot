@@ -1,6 +1,6 @@
-# GitHub Pull Request Bot
+# GitHub PR Bot
 
-Commit a single file and send a pull request.
+🤖 commits a single file and sends a pull request.
 
 _It requires a [GitHub App](https://developer.github.com/apps/getting-started-with-building-apps/#using-github-apps) to be configured._
 

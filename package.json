@@ -1,8 +1,7 @@
 {
-  "name": "gitops-bot-commit",
+  "name": "github-pr-bot",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "🤖 commits a single file and sends a pull request",
   "dependencies": {
     "@octokit/rest": "^15.2.6",
     "jsonwebtoken": "^8.2.1"
@@ -15,13 +14,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/danillouz/gitops-bot-commit.git"
+    "url": "git+https://github.com/danillouz/github-pr-bot.git"
   },
   "keywords": [],
   "author": "Daniël Illouz <daniel.illouz@me.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/danillouz/gitops-bot-commit/issues"
+    "url": "https://github.com/danillouz/github-pr-bot/issues"
   },
-  "homepage": "https://github.com/danillouz/gitops-bot-commit#readme"
+  "homepage": "https://github.com/danillouz/github-pr-bot#readme"
 }
