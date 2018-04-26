@@ -32,12 +32,13 @@ const noPrivateKeyMsg = `Provide the \`PRIVATE_KEY\` env. var.
     $ awk '$1=$1' ORS='\\n' ./private-key.pem
 
   Example:
-    PRIVATE_KEY='-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEAziG4WKpidTSt6VUixRGfoAXrfmqH/SykUwo2+fNtrE2G+OQC\nipZhi9elapw19YFUDM9wW4iquqyE6B9j5+dDQLwOfx1fI1WG6UOflM30teXdEKsN\nxL8fzq6q16og+zZSVXnenXORVSEAROvVWNQvs3bBOywLQEQKFoykYpH+Oap8wai8\n4Qh05rj7KJitl2GbScVBDcZK6aWsr4RhSnzxiJZPFOOsOtm6JRtcHaPXByHURjeY\nif9lCLGSTU6Cx1z6UfYJYtnI5KWpiK06RyaLvjq7Qkf9jHn9Q6cDISwe7/3eEjBV\n7UTnOkCIOUh4pGaLPZkKpBTX+Kr5zEdpCGFOuQIDAQABAoIBAQCIrYUtjXSRYKe8\nIo5We1QLaEF45ixbbAFdalV/sLBU4mcPmygwOnxdnFR7dy60JdfUUqueleUWuBO8\nUiwNdaN7RfaaxJ/zrt8wxn0GzvVmsw684Z7UiSIPCnQPYihSSfeX46H/ZsTD3Ijw\nKiuhpbgnWCPSF2cyaqsBvqm1Djayhq764LbmUqhggC2wbwoKmGVFW+uAeU0uepk5\nMQ91xu67O58c9GvvlGoicURaegtzmn1MZXGohI5bxy5ZeAQwx7hadu/96KupJTtQ\nXooe5QJS+rXOxr3/ZfPVXN1q1Pcfo35shAGAoT7hiJJEDZ6IqSjrSjmRHF5BhAyh\nJkGTzu2xAoGBAPIILbkIo+WELLEpSEGgcafYQ3MphWbAwgmooEWHgmq+wxh0+/aX\nEkWrZCYFmGa2zZfEqvCOskY6MGKAj5/YUTkNub4KYoSgCwRHN6i4K1v6v21cnuGX\nNUnqI9K4UTDPVxzEIsM7VaKfonUR8bVKdWNFybHwDf/BCoFdttJeiSZtAoGBANoH\nJTe0cpa067N2h3K8Vd/i3o4tLmOgu/St9OBwTkcsvEPq5XWyezsmRWI4XHdPBALf\no3dlxVF39d88BX5xlqZcThg9oLalUduOijnZNv+G5BXnnPsMnYOkKTiBfV+BTcrd\nvdeSFqu/YCdzbgGQ7ox/c+8w00Vzo2E7Ot+2non9AoGANiigWpxVWIGIIqiTM6Q8\naouZJEbxQ/n0MYcbPhPBmjNPosRisV5Cx3Y/tcZgwPM89C4c9jFoMRDKTPBpsyIL\notGwc5cNTpIlhPKOwOFdSnrEpSspnl9gnEaZd4ipGlv7KUO2Z6t6USaZisrWJHQh\n6nHuXTPTXhyLRkF7LH3dAM0CgYA8zA9JyEzHz62GPsAoc3Iy202aMekkqPaglT2a\ntFZvrH7XJZJUzq9kYBiq+fJ25pbEwl4P9lYekKgEVvVlPAF5ZHX2doDxTYpVAhtz\nZCnc+V1y6kIxE2R9B/LiqeEvF5x8vHaqvTcLL3N9rMd5mlQC46uNgHz5efSOMXkK\nVx9AdQKBgQCOM5+635CsiGxehH+YbO1PpAIc0BCXKMwatLeLHkhqxUgVgrG2Diru\nTewEHzWdO7RpvE0203AA4pDB+E9tWKx/+50l7Bd4z99a+MX8wFWqNByVzQIfzmxc\n6F/ttF3n6pQ+ftGt+TSye3zruS0Hu7xHw9xQwb6zvGQJ+50piPtELq\n-----END RSA PRIVATE KEY-----\n'
+    PRIVATE_KEY='-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAtyHGso4MKnOStVYItxY+tDF1rY4QNdr34vqH9HfYen5A/wL+\nKczXb75pZ80Skq1M8PmhC2KXHRsBT6GujF2mjCVkjyJRxmLN8JYh8aQFHTS5YxFK\nQMHhbJ7jnPMFr7El7Z5UrsURFGJGSIPdl8/wsLCbrwGBp5OLQy0qPvD6X/WTstHy\ndf6fSfpDEelCdHOfoTDPRishVf9PpCPXFPz6wWUiT8+FDk0bQZVR6+l5mJIPh1l6\nsy8XXUpVn9K5UM6luSeJ3MKkDnQ29kI93wK9p1P4haap+11wDQoAktTc7YVpopOP\nZWQQqsjZilD/d1bmKZl8wbWdgE9KQfGPzE9BhwIDAQABAoIBABzGp+xCudKp2nG4\nFSJ/0laKNw2QdyefQrhd2aMmedO1pwzrMXjsASZD61guNy7pIF/1OcMKOOiP58LV\nixHvXU5ESerb37GmsOmPDcJknZEbSc4xV1OZo4xn4yg0X75dvbH64R+dQ7PKRXT7\nk4RZXl7FQZFcUT09x/JEVJETWKRfNEZ8U/O2/e/npvGBtnz2+1mp/borA1/wM6YL\nM166jhm8jh2t+RVtgDmE1iyJgIi/RAgKV9XjF/LmN/S7fInCUXO0FxVmX32+BKrN\nApklWcuoJn4ZhbJQIppqJDrYqGxgeyYh0K2RjI4G0W6mDEmYKXZ0q1G7wX1cOtIn\nbrWdSqECgYEA3jPp8ymHqIY/u4vEtUGZWLpACWFlBFnyBKfJNhvP1uRkTNoZ6iM5\n51CxLHvT57tfXEuTNKgMtZ+3197m+4CyP7/mtD0jKeP3iE7xY6AeLR6l06PRD/e0\nKB6SnmPWyESfvHZxdNFy2j8g6CapXGZaUjy0E2JGwlVG+7fWt1e6a78CgYEA0vyH\nlRlhZRE/89ThYdPN46Xs3ENR4gts6WHoVz4jObttUrHRFJgUmojN4UobgmU7h9i5\n5ZWG91fk2nRrCeacsP+HdvjuQjrbSUHl+REz8QMjU5x6EztZm/3cS7xrVIWsj9LD\n6sOd1O7tnKH3A5Qh8JXJRs75cMrvC5vl0wKTvDkCgYAzgUcORScbyhqFx20OMqlv\n5qQnSHsY2hx+NcIvF51Ci2gwZDGzkvy+AHdA/2bsBQOiqiXyA64Gf4ImuJVD4N3w\nZvP7/VvkPuJGpz3OwPOds8fuWb+A+wK4dfW4Xx4PB9Ea5z1/PXlo208uYJ/LOjJf\nc5CuGY6bRxcQC9nqX5xnkwKBgQCBrbdD3CKxtQWCv9B7iWxdxIkt5K66ad1aINRm\ncwnBnUKXdjWVG9hmFzm7hAoefkw1te6kfuBCvKIr5yw3HKgoXhaL+Hqw+G35u+g2\nyu0K8KvQ4zdhBLSSHVk+r6OkgrjKeXfznqIu01/2StKBP5YQwm/A9sv4GLMOhpae\nuFHHeQKBgCL+i7BL/yQ/Hyo3PmtRgJq4Gfr/OMTKFF+usjhRA07u0zqZMZT0orUY\nzyZRB4awwlkhsOcjn2aPU/fj6uHg4e6tmsoSTaBbK/PArrN9ClYgeh/zlTj1dI5m\nWW39azEwfga5UnZEJJbNTIt1/Rq7nhW3+73QMCxkeM7mwT8ZfBcN\n-----END RSA PRIVATE KEY-----\n'
 `;
 
 const noRepoNameMsg = `Provide the \`REPO_NAME\` env. var.
 
-  This must contain the name of the GitHub repository.
+  This must contain the name of the GitHub repository onto which this workflow
+  will be applied to.
 
   Example:
     REPO_NAME='gitops-bot-commit'
@@ -55,7 +56,7 @@ const noBranchBaseMsg = `Provide the \`BRANCH_BASE\` env. var.
 
 const noBranchHeadMsg = `Provide the \`BRANCH_HEAD\` env. var.
 
-  This must contain the name of the branch where your changes will be
+  This must contain the name of the branch where the changes will be
   implemented. For more information see:
     https://developer.github.com/v3/pulls/#create-a-pull-request
 
@@ -75,8 +76,8 @@ const noCommitPathMsg = `Provide the \`COMMIT_PATH\` env. var.
 
 const noCommitContentMsg = `Provide the \`COMMIT_CONTENT\` env. var.
 
-  This must contain the new content you want the file to be commited have and must
-  contain the entire file content. For more information see:
+  This must contain the new content of the file to be commited and must contain
+  the entire file content. For more information see:
     https://developer.github.com/v3/git/trees/#create-a-tree
 
   Example:
@@ -102,12 +103,12 @@ const noCommitContentMsg = `Provide the \`COMMIT_CONTENT\` env. var.
 
 const noCommitMsgMsg = `Provide the \`COMMIT_MSG\` env. var.
 
-  This must contain the message that describes your commit. For more information
+  This must contain the message that describes the commit. For more information
   see:
     https://developer.github.com/v3/git/commits/#create-a-commit
 
   Example:
-    COMMIT_MSG='Update infra config with new Docker image tag'
+    COMMIT_MSG='Update infra config with new image'
 `;
 
 const noPRTitleMsg = `Provide the \`PR_TITLE\` env. var.
@@ -126,7 +127,7 @@ const noPRText = `Provide the \`PR_TEXT\` env. var.
     https://developer.github.com/v3/git/commits/#create-a-commit
 
   Example:
-    PR_TEXT='This PR updates the infra config with a new Docker image.'
+    PR_TEXT='This commit updates the deployment image to \`danillouz/docker-say:1.0.1\`.'
 `;
 
 module.exports = function parseParams({

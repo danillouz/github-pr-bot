@@ -11,7 +11,10 @@ module.exports = async function createCommit(
     tree: JSON.stringify([
       {
         path: commit.path,
-        mode: '100644', // file
+
+        // @see https://developer.github.com/v3/git/trees/#create-a-tree
+        mode: '100644',
+
         type: 'blob',
         content: commit.content
       }
