@@ -103,24 +103,25 @@ ${chalk.bold.red('ERROR: Provide the `COMMIT_PATH` env. var.')}
     ${chalk.green("COMMIT_PATH='k8s/deployment.yaml'")}
 `;
 
-const contentExample = `apiVersion: extensions/v1beta1
-    kind: Deployment
-    metadata:
-      name: test
-      namespace: test
-    spec:
-      replicas: 1
-      template:
-        metadata:
-          labels:
-            app: test
-            version: v1
-        spec:
-          containers:
-          - image: danillouz/docker-say:1.0.0
-            name: test
-            ports:
-            - containerPort: 8888`;
+const _contentExample = `apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    name: test
+    namespace: test
+  spec:
+    replicas: 1
+    template:
+      metadata:
+        labels:
+          app: test
+          version: v1
+      spec:
+        containers:
+        - image: danillouz/docker-say:1.0.0
+          name: test
+          ports:
+          - containerPort: 8888
+`;
 
 const noCommitContentMsg = `
 ${chalk.bold.red('ERROR: Provide the `COMMIT_CONTENT` env. var.')}
@@ -132,7 +133,7 @@ ${chalk.bold.red('ERROR: Provide the `COMMIT_CONTENT` env. var.')}
     )}
 
   Example:
-    ${chalk.green("COMMIT_CONTENT='" + contentExample + "'")}
+    ${chalk.green("COMMIT_CONTENT='" + _contentExample + "'")}
 `;
 
 const noCommitMsgMsg = `

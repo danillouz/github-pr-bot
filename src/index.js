@@ -8,7 +8,7 @@ const getBaseCommit = require('./lib/get-base-commit');
 const createCommit = require('./lib/create-commit');
 const createPR = require('./lib/create-pr');
 
-async function run() {
+async function runWorkflow() {
   const { appId, privateKey, repo, branch, commit, pr } = parseParams(
     process.env
   );
@@ -26,17 +26,17 @@ async function run() {
 
   const baseCommit = await getBaseCommit(github, repoInfo, branch);
   const newCommitSha = await createCommit(github, repoInfo, baseCommit, commit);
-  const prUrl = await createPR(github, repoInfo, newCommitSha, branch, pr);
+  const newPR = await createPR(github, repoInfo, newCommitSha, branch, pr);
 
-  return prUrl;
+  return newPR;
 }
 
-run()
-  .then(pr => {
-    console.log(pr);
+runWorkflow()
+  .then(newPR => {
+    console.log(newPR);
   })
   .catch(err => {
-    console.log(err.message);
+    console.log(err);
 
     process.exit(1);
   });

@@ -22,5 +22,5 @@ module.exports = async function createPR(
     maintainer_can_modify: true
   });
 
-  return newPR.html_url;
+  return newPR;
 };
