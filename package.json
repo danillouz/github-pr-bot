@@ -4,6 +4,7 @@
   "description": "🤖 commits a single file and sends a pull request",
   "dependencies": {
     "@octokit/rest": "^15.2.6",
+    "chalk": "^2.4.1",
     "jsonwebtoken": "^8.2.1"
   },
   "devDependencies": {
