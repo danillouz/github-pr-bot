@@ -76,7 +76,7 @@ const noCommitPathMsg = `Provide the \`COMMIT_PATH\` env. var.
 
 const noCommitContentMsg = `Provide the \`COMMIT_CONTENT\` env. var.
 
-  This must contain the new content of the file to be commited and must contain
+  This must contain the new content of the file to be commited, which must contain
   the entire file content. For more information see:
     https://developer.github.com/v3/git/trees/#create-a-tree
 

@@ -24,7 +24,7 @@ module.exports = async function getBaseCommit(github, repoInfo, branch) {
     const noBaseBranch = err.code === 404 || err.code == 'NO_BASE_BRANCH';
 
     if (noBaseBranch) {
-      throw new Error(`Base branch "${baseBranch}" not found.`);
+      throw new Error(`Base branch "${branch.base}" not found.`);
     }
 
     throw err;
